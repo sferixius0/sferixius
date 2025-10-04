@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BurgerZone - Лучшие бургеры в городе</title>
+    <style>
+        :root {
+            --primary-color: #ff5722;
+            --secondary-color: #ff9800;
+            --dark-bg: #1a1a1a;
+            --darker-bg: #121212;
+            --card-bg: #2a2a2a;
+            --light-text: #ffffff;
+            --gray-text: #cccccc;
+            --transition: all 0.3s ease;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            --border-radius: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--light-text);
+            background-color: var(--dark-bg);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        section {
+            padding: 80px 0;
+        }
+
+        h1, h2, h3, h4 {
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--darker-bg);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--light-text);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--primary-color);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--light-text);
+            text-decoration: none;
+            transition: var(--transition);
+            font-weight: 500;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--secondary-color);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--secondary-color);
+            transition: var(--transition);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .order-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--light-text);
+            padding: 10px 20px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: bold;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+
+        .order-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255, 87, 34, 0.4);
+        }
+
+        /* Mobile Navigation */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--light-text);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                        url('https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            color: var(--gray-text);
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--light-text);
+            padding: 12px 30px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 87, 34, 0.5);
+        }
+
+        /* Section Titles */
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--light-text);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .section-title span {
+            color: var(--primary-color);
+        }
+
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-text h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--secondary-color);
+        }
+
+        .about-text p {
+            color: var(--gray-text);
+            margin-bottom: 1.5rem;
+        }
+
+        .about-image {
+            height: 400px;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            position: relative;
+            box-shadow: var(--shadow);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Menu Section */
+        .menu {
+            background-color: var(--darker-bg);
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .menu-item {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+
+        .menu-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .menu-item-image {
+            height: 200px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .menu-item:hover .menu-item-image img {
+            transform: scale(1.1);
+        }
+
+        .menu-item-content {
+            padding: 1.5rem;
+        }
+
+        .menu-item-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary-color);
+        }
+
+        .menu-item-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .menu-item-description {
+            color: var(--gray-text);
+            margin-bottom: 1.5rem;
+        }
+
+        .add-to-cart {
+            background: var(--primary-color);
+            color: var(--light-text);
+            border: none;
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+            font-weight: bold;
+        }
+
+        .add-to-cart:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        /* Reviews Section */
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .review-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+
+        .review-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .review-text {
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            color: var(--gray-text);
+            position: relative;
+        }
+
+        .review-text::before {
+            content: '"';
+            font-size: 3rem;
+            color: var(--primary-color);
+            position: absolute;
+            top: -20px;
+            left: -10px;
+            opacity: 0.5;
+        }
+
+        .review-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .author-info h4 {
+            color: var(--secondary-color);
+            margin-bottom: 0.2rem;
+        }
+
+        .author-info p {
+            color: #999;
+            font-size: 0.9rem;
+            margin-bottom: 0;
+        }
+
+        /* Contacts Section */
+        .contacts {
+            background: var(--darker-bg);
+        }
+
+        .contacts-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .map {
+            height: 400px;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .map iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--darker-bg);
+            padding: 60px 0 20px;
+            border-top: 2px solid var(--primary-color);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            color: var(--secondary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+
+        .footer-section p, .footer-section a {
+            color: var(--gray-text);
+            text-decoration: none;
+            margin-bottom: 0.8rem;
+            display: block;
+            transition: var(--transition);
+        }
+
+        .footer-section a:hover {
+            color: var(--primary-color);
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: var(--card-bg);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            margin-bottom: 0;
+        }
+
+        .social-links a:hover {
+            background: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #444;
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-wrap: wrap;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            nav {
+                width: 100%;
+                display: none;
+                margin-top: 1rem;
+            }
+
+            nav.active {
+                display: block;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .about-content, .contacts-content {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .hero-content p {
+                font-size: 1rem;
+            }
+
+            section {
+                padding: 60px 0;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo">Burger<span>Zone</span></a>
+                
+                <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+                
+                <nav id="mainNav">
+                    <ul>
+                        <li><a href="#home">Главная</a></li>
+                        <li><a href="#about">О нас</a></li>
+                        <li><a href="#menu">Меню</a></li>
+                        <li><a href="#reviews">Отзывы</a></li>
+                        <li><a href="#contacts">Контакты</a></li>
+                    </ul>
+                </nav>
+                
+                <button class="order-btn" onclick="scrollToMenu()">Заказать онлайн</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Самые сочные бургеры в городе</h1>
+                <p>Наслаждайтесь идеальным сочетанием свежих ингредиентов, сочного мяса и ароматных соусов в каждом укусе</p>
+                <button class="cta-button" onclick="scrollToMenu()">Посмотреть меню</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="container">
+            <h2 class="section-title">Почему <span>BurgerZone</span></h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Наша история</h3>
+                    <p>BurgerZone - это не просто бургерная, это место, где рождаются легенды. Мы начали свой путь в 2015 году с маленькой кухни и большой мечты - создавать лучшие бургеры в городе.</p>
+                    <p>Каждый день мы отбираем только самые свежие ингредиенты, готовим соусы по собственным рецептам и следим за тем, чтобы каждый бургер был идеальным.</p>
+                    <p>Наша философия проста: качество, вкус и забота о каждом клиенте.</p>
+                </div>
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Интерьер BurgerZone">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section class="menu" id="menu">
+        <div class="container">
+            <h2 class="section-title">Наше <span>меню</span></h2>
+            <div class="menu-grid">
+                <!-- Burger 1 -->
+                <div class="menu-item">
+                    <div class="menu-item-image">
+                        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Классический чизбургер">
+                    </div>
+                    <div class="menu-item-content">
+                        <h3 class="menu-item-title">Классический чизбургер</h3>
+                        <div class="menu-item-price">450 ₽</div>
+                        <p class="menu-item-description">Говяжья котлета, сыр чеддер, свежие овощи, фирменный соус</p>
+                        <button class="add-to-cart" onclick="addToCart('Классический чизбургер', 450)">Добавить в корзину</button>
+                    </div>
+                </div>
+
+                <!-- Burger 2 -->
+                <div class="menu-item">
+                    <div class="menu-item-image">
+                        <img src="https://images.unsplash.com/photo-1553979459-d2229ba7433w=600&q=80" alt="Бургер с беконом">
+                    </div>
+                    <div class="menu-item-content">
+                        <h3 class="menu-item-title">Бургер с беконом</h3>
+                        <div class="menu-item-price">520 ₽</div>
+                        <p class="menu-item-description">Двойная котлета, хрустящий бекон, сыр, соус барбекю</p>
+                        <button class="add-to-cart" onclick="addToCart('Бургер с беконом', 520)">Добавить в корзину</button>
+                    </div>
+                </div>
+
+                <!-- Burger 3 -->
+                <div class="menu-item">
+                    <div class="menu-item-image">
+                        <img src="https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Острый бургер">
+                    </div>
+                    <div class="menu-item-content">
+                        <h3 class="menu-item-title">Острый мексикано</h3>
+                        <div class="menu-item-price">480 ₽</div>
+                        <p class="menu-item-description">Острая куриная котлета, перец халапеньо, сыр, острый соус</p>
+                        <button class="add-to-cart" onclick="addToCart('Острый мексикано', 480)">Добавить в корзину</button>
+                    </div>
+                </div>
+
+                <!-- Burger 4 -->
+                <div class="menu-item">
+                    <div class="menu-item-image">
+                        <img src="https://images.unsplash.com/photo-1525059696034-4967a7290042?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Вегетарианский бургер">
+                    </div>
+                    <div class="menu-item-content">
+                        <h3 class="menu-item-title">Вегетарианский</h3>
+                        <div class="menu-item-price">420 ₽</div>
+                        <p class="menu-item-description">Овощная котлета, авокадо, свежие
